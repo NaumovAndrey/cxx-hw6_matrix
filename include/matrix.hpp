@@ -17,6 +17,7 @@ namespace math
                             m_rows(rows), m_cols(cols), m_matrix(std::vector<real>(rows*cols)){};
 
         real& operator()(int row, int col);
+        const real& operator()(int row, int col) const;
 
         void print();
 

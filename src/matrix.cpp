@@ -3,7 +3,7 @@
 
 using namespace math;
 
-real& Matrix::operator()(int row, int col)
+real& math::Matrix::operator()(int row, int col)
 {
     if(row >= this->m_rows || col >= this->m_cols)
     {
@@ -13,6 +13,12 @@ real& Matrix::operator()(int row, int col)
     int pos(0);
     pos = m_cols * row + col;
     
+    return this->m_matrix.at(pos);
+}
+
+const real& math::Matrix::operator()(int row, int col) const
+{
+    int pos = m_cols * row + col;
     return this->m_matrix.at(pos);
 }
 
@@ -73,10 +79,17 @@ Matrix math::operator*(const Matrix& lhs, const Matrix& rhs)
         return Matrix(0, 0);
     }
 
-    Matrix result(lhs.m_rows, lhs.m_cols);
+    Matrix result(lhs.m_rows, rhs.m_cols);
 
-    for(int i = 0; i < rhs.m_rows; ++i)
+    for(size_t i = 0; i < rhs.m_rows; ++i)
     {
+        for (size_t j= 0; j< rhs.m_cols; ++j)
+        {
+            for(size_t k = 0; k < lhs.m_cols; ++k)
+            {
+                result(i, j) += lhs(i, k) * rhs(k, j);
+            }
+        }
         
     }
 
