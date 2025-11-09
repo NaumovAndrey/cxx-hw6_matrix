@@ -12,7 +12,7 @@ namespace math
         std::vector<real> m_matrix;
 
     public:
-        Matrix();
+        Matrix() = default;
         Matrix(int rows, int cols) : 
                             m_rows(rows), m_cols(cols), m_matrix(std::vector<real>(rows*cols)){};
 
