@@ -24,6 +24,18 @@ namespace math
         friend Matrix operator+(const Matrix& lhs, const Matrix& rhs);
         friend Matrix operator-(const Matrix& lhs, const Matrix& rhs);
         friend Matrix operator*(const Matrix& lhs, const Matrix& rhs);
+
+        template <typename T>
+        concept IsMatrix = std::same_as<std::remove_cvref_t<T>, Matrix>;
+
+        // Операторы присваивания-расширения
+        friend Matrix& operator+=(IsMatrix auto& lhs, const IsMatrix auto& rhs);
+        friend Matrix& operator-=(IsMatrix auto& lhs, const IsMatrix auto& rhs);
+        friend Matrix& operator*=(IsMatrix auto& lhs, const IsMatrix auto& rhs);
+
+        // Потоковые операторы
+        friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
+        friend std::istream& operator>>(std::istream& is, Matrix& m);
     };
     
     Matrix operator+(const Matrix& lhs, const Matrix& rhs);
