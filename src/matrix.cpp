@@ -95,3 +95,22 @@ Matrix math::operator*(const Matrix& lhs, const Matrix& rhs)
 
     return result;
 }
+
+Matrix &math::operator+=(IsMatrix auto &lhs, const IsMatrix auto &rhs)
+{
+    // TODO: insert return statement here
+    return lhs;
+}
+
+Matrix &math::operator-=(IsMatrix auto &lhs, const IsMatrix auto &rhs)
+{
+    // TODO: insert return statement here
+    return lhs;
+}
+
+Matrix &math::operator*=(IsMatrix auto &lhs, const IsMatrix auto &rhs)
+{
+    // TODO: insert return statement here
+    return lhs;
+}
+

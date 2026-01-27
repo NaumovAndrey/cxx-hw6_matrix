@@ -1,9 +1,18 @@
 #pragma once
 #include <vector>
+#include <concepts>
+#include <type_traits>
+#include <ostream>
+#include <istream>
 
 namespace math
 {
     typedef double real;
+
+    class Matrix;
+
+    template <typename T>
+    concept IsMatrix = std::same_as<std::remove_cvref_t<T>, Matrix>;
 
     class Matrix
     {
@@ -25,9 +34,7 @@ namespace math
         friend Matrix operator-(const Matrix& lhs, const Matrix& rhs);
         friend Matrix operator*(const Matrix& lhs, const Matrix& rhs);
 
-        template <typename T>
-        concept IsMatrix = std::same_as<std::remove_cvref_t<T>, Matrix>;
-
+ 
         // Операторы присваивания-расширения
         friend Matrix& operator+=(IsMatrix auto& lhs, const IsMatrix auto& rhs);
         friend Matrix& operator-=(IsMatrix auto& lhs, const IsMatrix auto& rhs);
