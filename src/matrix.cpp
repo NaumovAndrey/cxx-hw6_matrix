@@ -98,19 +98,88 @@ Matrix math::operator*(const Matrix& lhs, const Matrix& rhs)
 
 Matrix &math::operator+=(IsMatrix auto &lhs, const IsMatrix auto &rhs)
 {
-    // TODO: insert return statement here
+    lhs += rhs;
     return lhs;
-}
+}   
 
 Matrix &math::operator-=(IsMatrix auto &lhs, const IsMatrix auto &rhs)
 {
-    // TODO: insert return statement here
-    return lhs;
+    if(lhs.m_rows != rhs.m_rows || lhs.m_cols != rhs.m_cols)
+    {
+        std::cerr << "Error: matrices have different dimensions" << std::endl;
+        return lhs;
+    }
+
+    for(int i = 0; i < lhs.m_matrix.size(); ++i)
+    {
+        lhs.m_matrix.at(i) -= rhs.m_matrix.at(i);
+    }
+    return *this;
 }
 
 Matrix &math::operator*=(IsMatrix auto &lhs, const IsMatrix auto &rhs)
 {
-    // TODO: insert return statement here
+    if(lhs.m_cols != rhs.m_rows)
+    {
+        std::cerr << "Error: matrices have different dimensions" << std::endl;
+        return lhs;
+    }
+
+    Matrix result(lhs.m_rows, rhs.m_cols);
+
+    for(size_t i = 0; i < rhs.m_rows; ++i)
+    {
+        for (size_t j= 0; j< rhs.m_cols; ++j)
+        {
+            for(size_t k = 0; k < lhs.m_cols; ++k)
+            {
+                result(i, j) += lhs(i, k) * rhs(k, j);
+            }
+        }
+        
+    }
+
+    lhs = result;
     return lhs;
 }
 
+        
+std::ostream &math::operator<<(std::ostream &os, const Matrix &m)
+{
+    for (std::size_t i = 0; i < m.m_rows; ++i)
+    {
+        for (std::size_t j = 0; j < m.m_cols; ++j)
+        {
+            os << m(i, j);
+            if (j + 1 < m.m_cols)
+                os << ' ';
+        }
+        os << '\n';
+    }
+    return os;
+}
+
+std::istream &math::operator>>(std::istream &is, Matrix &m)
+{
+    td::size_t rows{}, cols{};
+        if (!(is >> rows >> cols))
+            return is;   
+
+        Matrix temp(rows, cols);
+
+        for (std::size_t i = 0; i < rows; ++i)
+        {
+            for (std::size_t j = 0; j < cols; ++j)
+            {
+                if (!(is >> temp(i, j)))
+                {
+                    is.setstate(std::ios::failbit);
+                    return is;
+                }
+            }
+        }
+
+        m = std::move(temp);   
+        return is;
+    return is;
+}
