@@ -1,185 +1,128 @@
 #include "matrix.hpp"
 #include <iostream>
 
-using namespace math;
-
-real& math::Matrix::operator()(int row, int col)
+namespace math
 {
-    if(row >= this->m_rows || col >= this->m_cols)
+    real &Matrix::operator()(int row, int col)
     {
-        std::cerr << "Error: index out of range" << std::endl;
-    }
-
-    int pos(0);
-    pos = m_cols * row + col;
-    
-    return this->m_matrix.at(pos);
-}
-
-const real& math::Matrix::operator()(int row, int col) const
-{
-    int pos = m_cols * row + col;
-    return this->m_matrix.at(pos);
-}
-
-void Matrix::print()
-{
-    for(int i = 0; i < this->m_rows; ++i)
-    {
-        for(int j = 0; j < this->m_cols; ++j)
+        if (row >= this->m_rows || col >= this->m_cols)
         {
-            std::cout << this->m_matrix.at(i * this->m_cols + j) << " ";
+            std::cerr << "Error: index out of range" << std::endl;
         }
-        std::cout << std::endl;
-    }    
-}
 
-Matrix math::operator+(const Matrix& lhs, const Matrix& rhs)
-{
-    if((lhs.m_rows != rhs.m_rows) || (lhs.m_cols != rhs.m_cols))
-    {
-        std::cerr << "Error: matrices have different dimensions" << std::endl;
-        return Matrix(0, 0);
+        int pos(0);
+        pos = m_cols * row + col;
+
+        return this->m_matrix.at(pos);
     }
 
-    Matrix result(lhs.m_rows, lhs.m_cols);
-
-    for(int i = 0; i < result.m_matrix.size(); ++i)
+    const real &Matrix::operator()(int row, int col) const
     {
-        result.m_matrix.at(i) = lhs.m_matrix.at(i) + rhs.m_matrix.at(i);
+        int pos = m_cols * row + col;
+        return this->m_matrix.at(pos);
     }
 
-    return result;
-}
-
-Matrix math::operator-(const Matrix& lhs, const Matrix& rhs)
-{
-    if((lhs.m_rows != rhs.m_rows) || (lhs.m_cols != rhs.m_cols))
+    void Matrix::print()
     {
-        std::cerr << "Error: matrices have different dimensions" << std::endl;
-        return Matrix(0, 0);
-    }
-
-    Matrix result(lhs.m_rows, lhs.m_cols);
-
-    for(int i = 0; i < result.m_matrix.size(); ++i)
-    {
-        result.m_matrix.at(i) = lhs.m_matrix.at(i) - rhs.m_matrix.at(i);
-    }
-
-    return result;
-}
-
-//матричное умножение
-Matrix math::operator*(const Matrix& lhs, const Matrix& rhs)
-{
-    if(lhs.m_cols != rhs.m_rows)
-    {
-        std::cerr << "error" << std::endl;
-        return Matrix(0, 0);
-    }
-
-    Matrix result(lhs.m_rows, rhs.m_cols);
-
-    for(size_t i = 0; i < rhs.m_rows; ++i)
-    {
-        for (size_t j= 0; j< rhs.m_cols; ++j)
+        for (int i = 0; i < this->m_rows; ++i)
         {
-            for(size_t k = 0; k < lhs.m_cols; ++k)
+            for (int j = 0; j < this->m_cols; ++j)
             {
-                result(i, j) += lhs(i, k) * rhs(k, j);
+                std::cout << this->m_matrix.at(i * this->m_cols + j) << " ";
             }
+            std::cout << std::endl;
         }
-        
     }
 
-    return result;
-}
-
-Matrix &math::operator+=(IsMatrix auto &lhs, const IsMatrix auto &rhs)
-{
-    lhs += rhs;
-    return lhs;
-}   
-
-Matrix &math::operator-=(IsMatrix auto &lhs, const IsMatrix auto &rhs)
-{
-    if(lhs.m_rows != rhs.m_rows || lhs.m_cols != rhs.m_cols)
+    Matrix &Matrix::operator+=(const Matrix &rhs)
     {
-        std::cerr << "Error: matrices have different dimensions" << std::endl;
+        if (m_rows != rhs.m_rows || m_cols != rhs.m_cols)
+            throw std::invalid_argument("matrices have different dimensions");
+
+        for (size_t i = 0; i < m_matrix.size(); ++i)
+            m_matrix[i] += rhs.m_matrix[i];
+
+        return *this;
+    }
+
+    Matrix operator+(Matrix lhs, const Matrix &rhs)
+    {
+        lhs += rhs;
         return lhs;
     }
 
-    for(int i = 0; i < lhs.m_matrix.size(); ++i)
+    Matrix &Matrix::operator-=(const Matrix &rhs)
     {
-        lhs.m_matrix.at(i) -= rhs.m_matrix.at(i);
-    }
-    return *this;
-}
+        if (m_rows != rhs.m_rows || m_cols != rhs.m_cols)
+            throw std::invalid_argument("matrices have different dimensions");
 
-Matrix &math::operator*=(IsMatrix auto &lhs, const IsMatrix auto &rhs)
-{
-    if(lhs.m_cols != rhs.m_rows)
+        for (int i = 0; i < m_matrix.size(); ++i)
+        {
+            m_matrix.at(i) -= rhs.m_matrix.at(i);
+        }
+        return *this;
+    }
+
+    Matrix operator-(Matrix lhs, const Matrix &rhs)
     {
-        std::cerr << "Error: matrices have different dimensions" << std::endl;
+        lhs -= rhs;
         return lhs;
     }
 
-    Matrix result(lhs.m_rows, rhs.m_cols);
-
-    for(size_t i = 0; i < rhs.m_rows; ++i)
+    Matrix &Matrix::operator*=(const Matrix &rhs)
     {
-        for (size_t j= 0; j< rhs.m_cols; ++j)
+        if (m_cols != rhs.m_rows)
+            throw std::invalid_argument("matrices have different dimensions");
+
+        Matrix result(m_rows, rhs.m_cols);
+
+        for (std::size_t i = 0; i < m_rows; ++i)
+            for (std::size_t j = 0; j < rhs.m_cols; ++j)
+                for (std::size_t k = 0; k < m_cols; ++k)
+                    result(i, j) += (*this)(i, k) * rhs(k, j);
+
+        *this = std::move(result);
+        return *this;
+    }
+
+    Matrix operator*(const Matrix &lhs, const Matrix &rhs)
+    {
+        Matrix result(lhs);
+        result *= rhs;
+        return result;
+    }
+
+    std::ostream &operator<<(std::ostream &os, const Matrix &m)
+    {
+        for (std::size_t i = 0; i < m.m_rows; ++i)
         {
-            for(size_t k = 0; k < lhs.m_cols; ++k)
+            for (std::size_t j = 0; j < m.m_cols; ++j)
             {
-                result(i, j) += lhs(i, k) * rhs(k, j);
+                os << m(i, j);
+                if (j + 1 < m.m_cols)
+                    os << ' ';
             }
+            os << '\n';
         }
-        
+        return os;
     }
 
-    lhs = result;
-    return lhs;
-}
-
-        
-std::ostream &math::operator<<(std::ostream &os, const Matrix &m)
-{
-    for (std::size_t i = 0; i < m.m_rows; ++i)
+    std::istream &operator>>(std::istream &is, Matrix &m)
     {
-        for (std::size_t j = 0; j < m.m_cols; ++j)
-        {
-            os << m(i, j);
-            if (j + 1 < m.m_cols)
-                os << ' ';
-        }
-        os << '\n';
-    }
-    return os;
-}
+        std::size_t rows{}, cols{};
 
-std::istream &math::operator>>(std::istream &is, Matrix &m)
-{
-    td::size_t rows{}, cols{};
         if (!(is >> rows >> cols))
-            return is;   
+            return is;
 
         Matrix temp(rows, cols);
 
         for (std::size_t i = 0; i < rows; ++i)
-        {
             for (std::size_t j = 0; j < cols; ++j)
-            {
                 if (!(is >> temp(i, j)))
-                {
-                    is.setstate(std::ios::failbit);
                     return is;
-                }
-            }
-        }
 
-        m = std::move(temp);   
+        m = std::move(temp);
+
         return is;
-    return is;
+    }
 }

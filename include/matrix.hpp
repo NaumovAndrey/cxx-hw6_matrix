@@ -4,15 +4,11 @@
 #include <type_traits>
 #include <ostream>
 #include <istream>
+#include <stdexcept>
 
 namespace math
 {
     typedef double real;
-
-    class Matrix;
-
-    template <typename T>
-    concept IsMatrix = std::same_as<std::remove_cvref_t<T>, Matrix>;
 
     class Matrix
     {
@@ -22,30 +18,35 @@ namespace math
 
     public:
         Matrix() = default;
-        Matrix(int rows, int cols) : 
-                            m_rows(rows), m_cols(cols), m_matrix(std::vector<real>(rows*cols)){};
+        Matrix(int rows, int cols) : m_rows(rows), m_cols(cols), m_matrix(std::vector<real>(rows * cols)) {};
 
-        real& operator()(int row, int col);
-        const real& operator()(int row, int col) const;
+        real &operator()(int row, int col);
+        const real &operator()(int row, int col) const;
 
         void print();
 
-        friend Matrix operator+(const Matrix& lhs, const Matrix& rhs);
-        friend Matrix operator-(const Matrix& lhs, const Matrix& rhs);
-        friend Matrix operator*(const Matrix& lhs, const Matrix& rhs);
+        int rows() const
+        {
+            return m_rows;
+        }
 
- 
+        int cols() const
+        {
+            return m_cols;
+        }
+
+        friend Matrix operator+(Matrix lhs, const Matrix &rhs);
+        friend Matrix operator-(Matrix lhs, const Matrix &rhs);
+        friend Matrix operator*(const Matrix &lhs, const Matrix &rhs);
+
         // Операторы присваивания-расширения
-        friend Matrix& operator+=(IsMatrix auto& lhs, const IsMatrix auto& rhs);
-        friend Matrix& operator-=(IsMatrix auto& lhs, const IsMatrix auto& rhs);
-        friend Matrix& operator*=(IsMatrix auto& lhs, const IsMatrix auto& rhs);
+        Matrix &operator+=(const Matrix &rhs);
+        Matrix &operator-=(const Matrix &rhs);
+        Matrix &operator*=(const Matrix &rhs);
 
         // Потоковые операторы
-        friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
-        friend std::istream& operator>>(std::istream& is, Matrix& m);
+        friend std::ostream &operator<<(std::ostream &os, const Matrix &m);
+        friend std::istream &operator>>(std::istream &is, Matrix &m);
     };
-    
-    Matrix operator+(const Matrix& lhs, const Matrix& rhs);
-    Matrix operator-(const Matrix& lhs, const Matrix& rhs);
-    Matrix operator*(const Matrix& lhs, const Matrix& rhs);
+
 }
