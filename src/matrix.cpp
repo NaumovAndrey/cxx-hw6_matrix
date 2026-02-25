@@ -92,6 +92,21 @@ namespace math
         return result;
     }
 
+    Matrix operator*(const Matrix &m, double scalar)
+    {
+        Matrix result(m.m_rows, m.m_cols);
+
+        for (std::size_t i = 0; i < m.m_rows; ++i)
+        {
+            for (std::size_t j = 0; j < m.m_cols; ++j)
+            {
+                result(i, j) = m(i, j) * scalar;
+            }
+        }
+
+        return result;
+    }
+
     std::ostream &operator<<(std::ostream &os, const Matrix &m)
     {
         for (std::size_t i = 0; i < m.m_rows; ++i)

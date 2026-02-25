@@ -38,13 +38,12 @@ namespace math
         friend Matrix operator+(Matrix lhs, const Matrix &rhs);
         friend Matrix operator-(Matrix lhs, const Matrix &rhs);
         friend Matrix operator*(const Matrix &lhs, const Matrix &rhs);
+        friend Matrix operator*(const Matrix &m, double scalar);
 
-        // Операторы присваивания-расширения
         Matrix &operator+=(const Matrix &rhs);
         Matrix &operator-=(const Matrix &rhs);
         Matrix &operator*=(const Matrix &rhs);
 
-        // Потоковые операторы
         friend std::ostream &operator<<(std::ostream &os, const Matrix &m);
         friend std::istream &operator>>(std::istream &is, Matrix &m);
     };
