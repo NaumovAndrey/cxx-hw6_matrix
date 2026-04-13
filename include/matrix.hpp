@@ -47,5 +47,4 @@ namespace math
         friend std::ostream &operator<<(std::ostream &os, const Matrix &m);
         friend std::istream &operator>>(std::istream &is, Matrix &m);
     };
-
 }
