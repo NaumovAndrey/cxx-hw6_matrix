@@ -22,7 +22,7 @@ namespace math
         return this->m_matrix.at(pos);
     }
 
-    void Matrix::print()
+    void Matrix::print() const
     {
         for (int i = 0; i < this->m_rows; ++i)
         {

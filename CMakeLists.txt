@@ -3,38 +3,71 @@ cmake_minimum_required(VERSION 3.16)
 project(
     matrix
     VERSION 0.0.1
-    DESCRIPTION "matrixlib  "
+    DESCRIPTION "matrixlib"
     LANGUAGES CXX
 )
 
-# Стандарт C++
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Тип сборки по умолчанию
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-# Исходники
+set(MATH_USE_DOUBLE_PRECISION "Use double precision" ON)
+
 set(SOURCES
     src/matrix.cpp
     src/c_api.cpp
-
 )
 
+include(GenerateExportHeader)
+
+find_package(fmt REQUIRED)
+
+# --- Статическая библиотека ---
 add_library(static-matrixlib STATIC ${SOURCES})
 
-# Включаем заголовочные файлы fmt
-find_package(fmt REQUIRED)
-target_link_libraries(static-matrixlib PRIVATE fmt::fmt)
-
-# Указываем include-директории
-target_include_directories(static-matrixlib
-    PUBLIC 
-        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-        ${PROJECT_SOURCE_DIR}/include
+generate_export_header(
+    static-matrixlib
+    EXPORT_FILE_NAME "${PROJECT_BINARY_DIR}/export_static.h"
+    BASE_NAME matrixlib
 )
-        
- set_target_properties(static-matrixlib PROPERTIES PREFIX "")      
 
+target_link_libraries(static-matrixlib PRIVATE fmt::fmt)
+target_include_directories(static-matrixlib PRIVATE 
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+
+target_compile_definitions(
+    static-matrixlib
+    PUBLIC
+        MATH_STATIC_DEFINE
+        "$<$<BOOL:${MATH_USE_DOUBLE_PRECISION}>:MATH_DOUBLE_PREC_DEFINE>"
+)
+
+set_target_properties(static-matrixlib PROPERTIES PREFIX "")
+
+# --- Динамическая библиотека ---
+add_library(shared_matrixlib SHARED ${SOURCES})
+
+generate_export_header(
+    shared_matrixlib
+    EXPORT_FILE_NAME "${PROJECT_BINARY_DIR}/export_shared.h"
+    BASE_NAME matrixlib
+)
+
+target_link_libraries(shared_matrixlib PRIVATE fmt::fmt)
+target_include_directories(shared_matrixlib PRIVATE 
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+
+target_compile_definitions(
+    shared_matrixlib
+    PUBLIC
+        "$<$<BOOL:${MATH_USE_DOUBLE_PRECISION}>:MATH_DOUBLE_PREC_DEFINE>"
+)
+
+set_target_properties(shared_matrixlib PROPERTIES PREFIX "")

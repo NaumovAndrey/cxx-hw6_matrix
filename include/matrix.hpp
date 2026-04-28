@@ -23,7 +23,7 @@ namespace math
         real &operator()(int row, int col);
         const real &operator()(int row, int col) const;
 
-        void print();
+        void print() const;
 
         int rows() const
         {
