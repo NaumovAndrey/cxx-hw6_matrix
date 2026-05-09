@@ -71,3 +71,29 @@ target_compile_definitions(
 )
 
 set_target_properties(shared_matrixlib PROPERTIES PREFIX "")
+
+# Подключение статической библиотеки
+add_executable(
+    test-static-matrix
+    src/test/test-static-matrix.cpp
+)
+
+target_include_directories(test-static-matrix PRIVATE 
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+
+target_link_libraries(test-static-matrix PRIVATE static-matrixlib)
+
+# Подключение динамической библиотеки
+add_executable(
+    test-shared-matrix
+    src/test/test-shared-matrix.cpp
+)
+
+target_include_directories(test-shared-matrix PRIVATE 
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+
+target_link_libraries(test-shared-matrix PRIVATE shared_matrixlib)
