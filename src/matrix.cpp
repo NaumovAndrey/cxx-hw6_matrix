@@ -1,3 +1,9 @@
+#ifdef LINKAGE
+    #define MATH_API LINKAGE
+#else
+    #define MATH_API
+#endif
+
 #include "matrix.hpp"
 #include <iostream>
 

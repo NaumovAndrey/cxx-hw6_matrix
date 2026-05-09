@@ -20,6 +20,9 @@ namespace math
         Matrix() = default;
         Matrix(int rows, int cols) : m_rows(rows), m_cols(cols), m_matrix(std::vector<real>(rows * cols)) {};
 
+        Matrix(const Matrix& other) 
+            : m_rows(other.m_rows), m_cols(other.m_cols), m_matrix(other.m_matrix){}
+
         real &operator()(int row, int col);
         const real &operator()(int row, int col) const;
 

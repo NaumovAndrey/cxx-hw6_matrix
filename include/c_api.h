@@ -1,29 +1,18 @@
-#pragma once
-#include "/home/naumov/Documents/skillbox/cpp/hw6/include/export.h"
-
-#ifdef MATH_DOBLE_PREC_DEFINE
-typedef double real;
-#else
-typedef float real;
-#endif
+#include "matrix.hpp"
+#include "export.h" 
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
-    typedef struct Matrix Matrix;
-    MATRIXLIB_EXPORT Matrix* math_createMatrix(int rows, int cols);
-    MATRIXLIB_EXPORT void math_deleteMatrix(Matrix *M);
+    using Matrix = math::Matrix*;
+    using real = double;
 
-    MATRIXLIB_EXPORT real math_get(const Matrix *M, int row, int col);
-    MATRIXLIB_EXPORT void math_set(Matrix *M, int row, int col, real val);
-
-    MATRIXLIB_EXPORT Matrix* math_add(const Matrix *A, const Matrix *B);
-    MATRIXLIB_EXPORT Matrix* math_subtract(const Matrix* A, const Matrix* B);
-    MATRIXLIB_EXPORT Matrix* math_dot(const Matrix* A, const Matrix* B);
-    MATRIXLIB_EXPORT void math_print(const Matrix* M);
-
+    MATRIXLIB_EXPORT Matrix math_createMatrix(int rows, int cols);
+    MATRIXLIB_EXPORT void math_deleteMatrix(Matrix M);
+    MATRIXLIB_EXPORT void math_set(Matrix M, int row, int col, real val);
+    MATRIXLIB_EXPORT real math_get(const Matrix M, int row, int col);
+    MATRIXLIB_EXPORT void math_print(const Matrix M);
 
 #ifdef __cplusplus
 }

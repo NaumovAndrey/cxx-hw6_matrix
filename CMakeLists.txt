@@ -52,6 +52,10 @@ set_target_properties(static-matrixlib PROPERTIES PREFIX "")
 # --- Динамическая библиотека ---
 add_library(shared_matrixlib SHARED ${SOURCES})
 
+target_compile_definitions(shared_matrixlib PRIVATE "LINKAGE=extern \"C\"")
+
+set_target_properties(shared_matrixlib PROPERTIES VISIBILITY_INLINES_HIDDEN YES)
+
 generate_export_header(
     shared_matrixlib
     EXPORT_FILE_NAME "${PROJECT_BINARY_DIR}/export_shared.h"

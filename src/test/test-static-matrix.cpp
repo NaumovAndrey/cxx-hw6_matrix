@@ -1,5 +1,5 @@
 #include <iostream>
-#include </home/naumov/Documents/skillbox/cpp/hw6/include/matrix.hpp>
+#include <matrix.hpp>
 
 int main()
 {

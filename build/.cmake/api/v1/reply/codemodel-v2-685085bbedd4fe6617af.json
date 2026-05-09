@@ -1,0 +1,87 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "matrix",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "shared_matrixlib::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-shared_matrixlib-Debug-6ffaa93db5299e50d30e.json",
+					"name" : "shared_matrixlib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "static-matrixlib::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-static-matrixlib-Debug-935c3c2287499e2710ae.json",
+					"name" : "static-matrixlib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test-shared-matrix::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test-shared-matrix-Debug-d7df8d245a52eed97c06.json",
+					"name" : "test-shared-matrix",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test-static-matrix::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test-static-matrix-Debug-1c98dd5b30bcf86d7bc9.json",
+					"name" : "test-static-matrix",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/naumov/Documents/skillbox/cpp/hw6/build",
+		"source" : "/home/naumov/Documents/skillbox/cpp/hw6"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

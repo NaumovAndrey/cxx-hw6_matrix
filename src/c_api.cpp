@@ -1,49 +1,34 @@
-#include "/home/naumov/Documents/skillbox/cpp/hw6/include/matrix.hpp"
-#include "/home/naumov/Documents/skillbox/cpp/hw6/include/c_api.h"
+#include "export.h"
+#include "matrix.hpp"
+#include "c_api.h"
 
+using Matrix = math::Matrix*;
 
-struct Matrix : public math::Matrix
+extern "C" {
+
+MATRIXLIB_EXPORT Matrix math_createMatrix(int rows, int cols)
 {
-public:
-    Matrix(const struct math::Matrix &M) : math::Matrix(M) {};
-};
-
-MATRIXLIB_EXPORT Matrix* math_createMatrix(int rows, int cols)
-{
-    return new Matrix(math::Matrix(rows, cols)); 
+    return new math::Matrix(rows, cols);
 }
 
-MATRIXLIB_EXPORT void math_deleteMatrix(Matrix *M)
+MATRIXLIB_EXPORT void math_deleteMatrix(Matrix M)
 {
     delete M;
 }
 
-MATRIXLIB_EXPORT real math_get(const Matrix *M, int row, int col)
+MATRIXLIB_EXPORT void math_set(Matrix M, int row, int col, real val)
 {
-    return M->operator()(row, col);
+    (*M)(row, col) = val;
 }
 
-MATRIXLIB_EXPORT void math_set(Matrix *M, int row, int col, real val)
+MATRIXLIB_EXPORT real math_get(const Matrix M, int row, int col)
 {
-    M->operator()(row, col) = val;
+    return (*M)(row, col);
 }
 
-MATRIXLIB_EXPORT Matrix* math_add(const Matrix *A, const Matrix *B)
-{
-    return new Matrix(*A + *B);
-}
-
-MATRIXLIB_EXPORT Matrix* math_subtract(const Matrix *A, const Matrix *B)
-{
-    return new Matrix(*A - *B);
-}
-
-MATRIXLIB_EXPORT Matrix* math_dot(const Matrix *A, const Matrix *B)
-{
-    return new Matrix(*A * *B);
-};
-
-MATRIXLIB_EXPORT void math_print(const Matrix *M)
+MATRIXLIB_EXPORT void math_print(const Matrix M)
 {
     M->print();
+}
+
 }

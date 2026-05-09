@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -g -Wl,--dependency-file=CMakeFiles/shared_matrixlib.dir/link.d -shared -Wl,-soname,shared_matrixlib.so -o shared_matrixlib.so CMakeFiles/shared_matrixlib.dir/src/matrix.cpp.o CMakeFiles/shared_matrixlib.dir/src/c_api.cpp.o  /usr/lib/x86_64-linux-gnu/libfmt.so.9.1.0
