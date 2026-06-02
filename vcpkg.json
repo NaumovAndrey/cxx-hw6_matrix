@@ -1,0 +1,7 @@
+{
+  "name": "cxx-hw6-matrix",
+  "version": "0.0.1",
+  "dependencies": [
+    "fmt"
+  ]
+}

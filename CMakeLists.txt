@@ -22,7 +22,7 @@ set(SOURCES
 add_executable(matrix ${SOURCES})
 
 # Включаем заголовочные файлы fmt
-find_package(fmt REQUIRED)
+find_package(fmt CONFIG REQUIRED)
 target_link_libraries(matrix PRIVATE fmt::fmt)
 
 # Указываем include-директории
