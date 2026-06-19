@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/test-shared-matrix.dir/link.d "CMakeFiles/test-shared-matrix.dir/src/test/test-shared-matrix.cpp.o" -o test-shared-matrix  -Wl,-rpath,/home/naumov/Documents/skillbox/cpp/hw6/build shared_matrixlib.so

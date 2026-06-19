@@ -1,6 +1,0 @@
-/home/naumov/Documents/skillbox/cpp/hw6/build/CMakeFiles/static-matrixlib.dir
-/home/naumov/Documents/skillbox/cpp/hw6/build/CMakeFiles/shared_matrixlib.dir
-/home/naumov/Documents/skillbox/cpp/hw6/build/CMakeFiles/test-static-matrix.dir
-/home/naumov/Documents/skillbox/cpp/hw6/build/CMakeFiles/test-shared-matrix.dir
-/home/naumov/Documents/skillbox/cpp/hw6/build/CMakeFiles/edit_cache.dir
-/home/naumov/Documents/skillbox/cpp/hw6/build/CMakeFiles/rebuild_cache.dir

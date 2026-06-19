@@ -1,2 +1,0 @@
-/usr/bin/ar qc static-matrixlib.a "CMakeFiles/static-matrixlib.dir/src/matrix.cpp.o" "CMakeFiles/static-matrixlib.dir/src/c_api.cpp.o"
-/usr/bin/ranlib static-matrixlib.a

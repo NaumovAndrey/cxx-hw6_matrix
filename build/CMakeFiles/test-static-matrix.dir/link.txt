@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/test-static-matrix.dir/link.d "CMakeFiles/test-static-matrix.dir/src/test/test-static-matrix.cpp.o" -o test-static-matrix  static-matrixlib.a /usr/lib/x86_64-linux-gnu/libfmt.so.9.1.0
