@@ -1,3 +1,9 @@
+#ifdef LINKAGE
+    #define MATH_API LINKAGE
+#else
+    #define MATH_API
+#endif
+
 #include "matrix.hpp"
 #include <iostream>
 
@@ -22,7 +28,7 @@ namespace math
         return this->m_matrix.at(pos);
     }
 
-    void Matrix::print()
+    void Matrix::print() const
     {
         for (int i = 0; i < this->m_rows; ++i)
         {
