@@ -3,101 +3,123 @@ cmake_minimum_required(VERSION 3.16)
 project(
     matrix
     VERSION 0.0.1
-    DESCRIPTION "matrixlib"
+    DESCRIPTION "Matrix library"
     LANGUAGES CXX
 )
 
+##############################################################################
+# Общие настройки
+##############################################################################
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-set(MATH_USE_DOUBLE_PRECISION "Use double precision" ON)
+option(MATH_USE_DOUBLE_PRECISION "Use double precision" ON)
 
-set(SOURCES
+include(GenerateExportHeader)
+
+##############################################################################
+# Исходные файлы
+##############################################################################
+
+set(MATRIX_SOURCES
     src/matrix.cpp
     src/c_api.cpp
 )
 
-include(GenerateExportHeader)
+##############################################################################
+# Общая функция настройки библиотеки
+##############################################################################
 
-find_package(fmt REQUIRED)
+function(configure_matrix_library TARGET)
 
-# --- Статическая библиотека ---
-add_library(static-matrixlib STATIC ${SOURCES})
+    target_include_directories(${TARGET}
+        PUBLIC
+            $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+            $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
+            $<INSTALL_INTERFACE:include>
+    )
 
-generate_export_header(
-    static-matrixlib
-    EXPORT_FILE_NAME "${PROJECT_BINARY_DIR}/export_static.h"
-    BASE_NAME matrixlib
+    target_compile_features(${TARGET}
+        PUBLIC
+            cxx_std_20
+    )
+
+    target_compile_definitions(${TARGET}
+        PUBLIC
+            "$<$<BOOL:${MATH_USE_DOUBLE_PRECISION}>:MATH_DOUBLE_PREC_DEFINE>"
+    )
+
+    set_target_properties(${TARGET}
+        PROPERTIES
+            PREFIX ""
+    )
+
+endfunction()
+
+##############################################################################
+# Статическая библиотека
+##############################################################################
+
+add_library(matrixlib_static STATIC
+    ${MATRIX_SOURCES}
 )
 
-target_link_libraries(static-matrixlib PRIVATE fmt::fmt)
-target_include_directories(static-matrixlib PRIVATE 
-    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
-)
+configure_matrix_library(matrixlib_static)
 
-target_compile_definitions(
-    static-matrixlib
+target_compile_definitions(matrixlib_static
     PUBLIC
-        MATH_STATIC_DEFINE
-        "$<$<BOOL:${MATH_USE_DOUBLE_PRECISION}>:MATH_DOUBLE_PREC_DEFINE>"
+        MATRIXLIB_STATIC_DEFINE
 )
 
-set_target_properties(static-matrixlib PROPERTIES PREFIX "")
+##############################################################################
+# Динамическая библиотека
+##############################################################################
 
-# --- Динамическая библиотека ---
-add_library(shared_matrixlib SHARED ${SOURCES})
-
-target_compile_definitions(shared_matrixlib PRIVATE "LINKAGE=extern \"C\"")
-
-set_target_properties(shared_matrixlib PROPERTIES VISIBILITY_INLINES_HIDDEN YES)
-
-generate_export_header(
-    shared_matrixlib
-    EXPORT_FILE_NAME "${PROJECT_BINARY_DIR}/export_shared.h"
-    BASE_NAME matrixlib
+add_library(matrixlib_shared SHARED
+    ${MATRIX_SOURCES}
 )
 
-target_link_libraries(shared_matrixlib PRIVATE fmt::fmt)
-target_include_directories(shared_matrixlib PRIVATE 
-    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
+configure_matrix_library(matrixlib_shared)
+
+generate_export_header(matrixlib_shared
+    BASE_NAME MATRIXLIB
+    EXPORT_FILE_NAME
+        "${PROJECT_BINARY_DIR}/matrixlib_export.h"
 )
 
-target_compile_definitions(
-    shared_matrixlib
-    PUBLIC
-        "$<$<BOOL:${MATH_USE_DOUBLE_PRECISION}>:MATH_DOUBLE_PREC_DEFINE>"
+set_target_properties(matrixlib_shared
+    PROPERTIES
+        VISIBILITY_INLINES_HIDDEN YES
 )
 
-set_target_properties(shared_matrixlib PROPERTIES PREFIX "")
+##############################################################################
+# Тест статической библиотеки
+##############################################################################
 
-# Подключение статической библиотеки
-add_executable(
-    test-static-matrix
+add_executable(test-static-matrix
     src/test/test-static-matrix.cpp
 )
 
-target_include_directories(test-static-matrix PRIVATE 
-    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
+target_link_libraries(test-static-matrix
+    PRIVATE
+        matrixlib_static
 )
 
-target_link_libraries(test-static-matrix PRIVATE static-matrixlib)
+##############################################################################
+# Тест динамической библиотеки
+##############################################################################
 
-# Подключение динамической библиотеки
-add_executable(
-    test-shared-matrix
+add_executable(test-shared-matrix
     src/test/test-shared-matrix.cpp
 )
 
-target_include_directories(test-shared-matrix PRIVATE 
-    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
+target_link_libraries(test-shared-matrix
+    PRIVATE
+        matrixlib_shared
 )
-
-target_link_libraries(test-shared-matrix PRIVATE shared_matrixlib)

@@ -1,34 +1,53 @@
-#include "export.h"
-#include "matrix.hpp"
 #include "c_api.h"
 
-using Matrix = math::Matrix*;
+#include "matrix.hpp"
 
-extern "C" {
-
-MATRIXLIB_EXPORT Matrix math_createMatrix(int rows, int cols)
+struct MatrixHandle
 {
-    return new math::Matrix(rows, cols);
-}
+    math::Matrix matrix;
 
-MATRIXLIB_EXPORT void math_deleteMatrix(Matrix M)
-{
-    delete M;
-}
+    MatrixHandle(int rows, int cols)
+        : matrix(rows, cols)
+    {}
+};
 
-MATRIXLIB_EXPORT void math_set(Matrix M, int row, int col, real val)
+extern "C"
 {
-    (*M)(row, col) = val;
-}
 
-MATRIXLIB_EXPORT real math_get(const Matrix M, int row, int col)
-{
-    return (*M)(row, col);
-}
+    MATRIXLIB_EXPORT Matrix math_createMatrix(int rows, int cols)
+    {
+        return new MatrixHandle(rows, cols);
+    }
 
-MATRIXLIB_EXPORT void math_print(const Matrix M)
-{
-    M->print();
-}
+    MATRIXLIB_EXPORT void math_deleteMatrix(Matrix matrix)
+    {
+        delete matrix;
+    }
+
+    MATRIXLIB_EXPORT void math_set(
+        Matrix matrix,
+        int row,
+        int col,
+        real value
+    )
+    {
+        matrix->matrix(row, col) = value;
+    }
+
+    MATRIXLIB_EXPORT real math_get(
+        Matrix matrix,
+        int row,
+        int col
+    )
+    {
+        return matrix->matrix(row, col);
+    }
+
+    MATRIXLIB_EXPORT void math_print(
+        Matrix matrix
+    )
+    {
+        matrix->matrix.print();
+    }
 
 }
