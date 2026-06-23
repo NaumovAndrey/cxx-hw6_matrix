@@ -7,10 +7,7 @@ project(
     LANGUAGES CXX
 )
 
-##############################################################################
 # Общие настройки
-##############################################################################
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -23,19 +20,13 @@ option(MATH_USE_DOUBLE_PRECISION "Use double precision" ON)
 
 include(GenerateExportHeader)
 
-##############################################################################
 # Исходные файлы
-##############################################################################
-
 set(MATRIX_SOURCES
     src/matrix.cpp
     src/c_api.cpp
 )
 
-##############################################################################
 # Общая функция настройки библиотеки
-##############################################################################
-
 function(configure_matrix_library TARGET)
 
     target_include_directories(${TARGET}
@@ -62,10 +53,7 @@ function(configure_matrix_library TARGET)
 
 endfunction()
 
-##############################################################################
 # Статическая библиотека
-##############################################################################
-
 add_library(matrixlib_static STATIC
     ${MATRIX_SOURCES}
 )
@@ -77,10 +65,7 @@ target_compile_definitions(matrixlib_static
         MATRIXLIB_STATIC_DEFINE
 )
 
-##############################################################################
 # Динамическая библиотека
-##############################################################################
-
 add_library(matrixlib_shared SHARED
     ${MATRIX_SOURCES}
 )
@@ -98,10 +83,7 @@ set_target_properties(matrixlib_shared
         VISIBILITY_INLINES_HIDDEN YES
 )
 
-##############################################################################
 # Тест статической библиотеки
-##############################################################################
-
 add_executable(test-static-matrix
     src/test/test-static-matrix.cpp
 )
@@ -111,10 +93,7 @@ target_link_libraries(test-static-matrix
         matrixlib_static
 )
 
-##############################################################################
 # Тест динамической библиотеки
-##############################################################################
-
 add_executable(test-shared-matrix
     src/test/test-shared-matrix.cpp
 )
