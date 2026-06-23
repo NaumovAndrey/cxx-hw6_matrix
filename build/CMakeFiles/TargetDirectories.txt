@@ -1,0 +1,6 @@
+C:/Users/andre/Documents/обучение/skilbox/hw6/cxx-hw6_matrix/build/CMakeFiles/matrixlib_static.dir
+C:/Users/andre/Documents/обучение/skilbox/hw6/cxx-hw6_matrix/build/CMakeFiles/matrixlib_shared.dir
+C:/Users/andre/Documents/обучение/skilbox/hw6/cxx-hw6_matrix/build/CMakeFiles/test-static-matrix.dir
+C:/Users/andre/Documents/обучение/skilbox/hw6/cxx-hw6_matrix/build/CMakeFiles/test-shared-matrix.dir
+C:/Users/andre/Documents/обучение/skilbox/hw6/cxx-hw6_matrix/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/andre/Documents/обучение/skilbox/hw6/cxx-hw6_matrix/build/CMakeFiles/ZERO_CHECK.dir
