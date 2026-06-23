@@ -31,6 +31,7 @@ int main()
     m_mul.print();
 
 
-    std::cout <<"hello world" << std::endl;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.get();
     return 0;
 }

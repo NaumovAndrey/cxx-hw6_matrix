@@ -1,19 +1,22 @@
-#include "matrix.hpp"
-#include "export.h" 
+#pragma once
+
+#include "matrixlib_export.h"
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+	#endif
 
-    using Matrix = math::Matrix*;
-    using real = double;
+	typedef struct MatrixHandle MatrixHandle;
+	typedef MatrixHandle* Matrix;
 
-    MATRIXLIB_EXPORT Matrix math_createMatrix(int rows, int cols);
-    MATRIXLIB_EXPORT void math_deleteMatrix(Matrix M);
-    MATRIXLIB_EXPORT void math_set(Matrix M, int row, int col, real val);
-    MATRIXLIB_EXPORT real math_get(const Matrix M, int row, int col);
-    MATRIXLIB_EXPORT void math_print(const Matrix M);
+	typedef double real;
 
-#ifdef __cplusplus
+	MATRIXLIB_EXPORT Matrix math_createMatrix(int rows, int cols);
+	MATRIXLIB_EXPORT void math_deleteMatrix(Matrix matrix);
+	MATRIXLIB_EXPORT void math_set(Matrix matrix, int row, int col, real value);
+	MATRIXLIB_EXPORT real math_get(Matrix matrix, int row, int col);
+	MATRIXLIB_EXPORT void math_print(Matrix matrix);
+
+	#ifdef __cplusplus
 }
 #endif

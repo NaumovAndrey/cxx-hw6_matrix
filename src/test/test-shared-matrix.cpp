@@ -1,30 +1,19 @@
-#include "export.h"
-
-struct Matrix;
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-    extern Matrix *MATRIXLIB_EXPORT math_createMatrix(int, int);
-    extern void MATRIXLIB_EXPORT math_set(Matrix*, int, int, double);
-    extern void MATRIXLIB_EXPORT math_print(Matrix*);
-    extern void MATRIXLIB_EXPORT math_deleteMatrix(Matrix*);
-
-
-#ifdef __cplusplus
-}
-#endif
+#include "c_api.h"
+#include <iostream>
 
 int main()
 {
-    Matrix *m = math_createMatrix(3, 3);
-    math_set(m, 0, 0, 1.);
-    math_set(m, 0, 1, 34.);
+    Matrix m = math_createMatrix(3, 3);
+
+    math_set(m, 0, 0, 1.0);
+    math_set(m, 0, 1, 34.0);
+
     math_print(m);
 
     math_deleteMatrix(m);
+
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.get();
 
     return 0;
 }
